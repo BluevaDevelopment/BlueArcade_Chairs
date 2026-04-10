@@ -28,14 +28,14 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>net.blueva</groupId>
-            <artifactId>BlueArcade-API</artifactId>
-            <version>3.1.0</version>
+            <groupId>com.github.BluevaDevelopment</groupId>
+            <artifactId>BlueArcadeAPI</artifactId>
+            <version>3.3</version>
         </dependency>
         <dependency>
             <groupId>com.hypixel.hytale</groupId>
             <artifactId>Server</artifactId>
-            <version>2026.01.28-87d03be09</version>
+            <version>2026.03.26-89796e57b</version>
         </dependency>
     </dependencies>
     <build>
