@@ -1,0 +1,13 @@
+name: Chairs
+id: chairs
+version: ${revision}
+type: MICROGAME
+api-version: 3.3
+main: net.blueva.arcade.modules.chairs.ChairsModule
+
+authors:
+  - Blueva
+  - Whiron
+
+description: "WIP - Hytale implementation pending."
+wip: true

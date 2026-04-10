@@ -1,0 +1,9 @@
+file_version: 1
+category:
+  id: chairs
+  name: "Chairs"
+  description:
+    - "Hytale achievements are not available yet."
+  icon: Stone
+  sort_order: 30
+achievements: {}
