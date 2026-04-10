@@ -59,7 +59,7 @@ Finish the setup with the commands below:
 - **Minigame ID:** `chairs`
 - **Module Type:** `MICROGAME`
 - **Version:** `1.0.0`
-- **Hytale edition status:** `WIP`
+- **Hytale edition status:** `WIP` 
 
 ## Building individual editions
 If you only need one edition, you can build it on its own:
