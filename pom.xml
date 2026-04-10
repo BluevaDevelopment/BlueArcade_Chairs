@@ -7,7 +7,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>chairs-minecraft</module>
-        <module>chairs-hytale</module>
     </modules>
     <properties>
         <revision>dev</revision>
