@@ -1,0 +1,23 @@
+Binary assets were intentionally not included in this change.
+
+Please restore the music files into this destination folder:
+
+Destination: BlueArcade-Modules/Comun/BlueArcade_Chairs/chairs-minecraft/src/main/resources/files/music/
+
+Files:
+- 14th Song.nbs
+- A Little Piece of Heaven.nbs
+- A Nightmare Before Christmas.nbs
+- Alan Walker - Alone.nbs
+- Alan Walker - Fade.nbs
+- Animals.nbs
+- BlindingLights.nbs
+- Gangnam Style.nbs
+- Gravity Falls Theme.nbs
+- I'm an Albatraoz.nbs
+- Luis Fonsi - Despacito.nbs
+- Mad World.nbs
+- Nyan Cat.nbs
+- OMFG - Hello.nbs
+- fnafsong.nbs
+- thriller.nbs
