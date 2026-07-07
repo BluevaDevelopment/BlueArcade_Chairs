@@ -28,6 +28,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
+import net.blueva.arcade.api.setup.ModuleSetupCommand;
+import net.blueva.arcade.api.setup.ModuleSetupMetadata;
+import net.blueva.arcade.api.setup.ModuleSetupStep;
+import net.blueva.arcade.api.setup.ModuleSetupStatusCheck;
+import java.util.List;
 
 public class ChairsModule implements GameModule<Player, Location, World, Material, ItemStack, Sound, Block, Entity, Listener, EventPriority> {
 
@@ -45,9 +50,8 @@ public class ChairsModule implements GameModule<Player, Location, World, Materia
         coreConfig = ModuleAPI.getCoreConfig();
         statsAPI = ModuleAPI.getStatsAPI();
 
-        moduleConfig.register("language.yml", 1);
-        moduleConfig.register("settings.yml", 1);
-        moduleConfig.register("achievements.yml", 1);
+        moduleConfig.register("settings.yml");
+        moduleConfig.register("achievements.yml");
 
         settings = new ChairsSettings();
         settings.load(moduleConfig);
@@ -66,8 +70,8 @@ public class ChairsModule implements GameModule<Player, Location, World, Materia
             voteMenu.registerGame(
                     moduleInfo.getId(),
                     Material.valueOf(moduleConfig.getString("menus.vote.item")),
-                    moduleConfig.getStringFrom("language.yml", "vote_menu.name"),
-                    moduleConfig.getStringListFrom("language.yml", "vote_menu.lore")
+                    moduleConfig.getTranslation(null, "vote_menu.name"),
+                    moduleConfig.getTranslationList(null, "vote_menu.lore")
             );
         }
 
@@ -149,4 +153,47 @@ public class ChairsModule implements GameModule<Player, Location, World, Materia
     public ChairsGame getGame() {
         return game;
     }
+
+
+    @Override
+    public boolean requiresSpawnCapacityValidation() {
+        return false;
+    }
+
+    @Override
+    public ModuleSetupMetadata getSetupMetadata() {
+        return new ModuleSetupMetadata() {
+
+            @Override
+            public List<ModuleSetupStep> getSetupSteps() {
+                return List.of(
+                        new ModuleSetupStep("musicreduction", true, "Configure Musicreduction", "Configure the module-specific musicreduction setup data.", List.of("/baa game <arena> chairs musicreduction"), "percentage or amount"),
+                        new ModuleSetupStep("musictime", true, "Configure Musictime", "Configure the module-specific musictime setup data.", List.of("/baa game <arena> chairs musictime"), "seconds"),
+                        new ModuleSetupStep("sitreduction", true, "Configure Sitreduction", "Configure the module-specific sitreduction setup data.", List.of("/baa game <arena> chairs sitreduction"), "percentage or amount"),
+                        new ModuleSetupStep("sittime", true, "Configure Sittime", "Configure the module-specific sittime setup data.", List.of("/baa game <arena> chairs sittime"), "seconds")
+                );
+            }
+
+            @Override
+            public List<ModuleSetupCommand> getSetupCommands() {
+                return List.of(
+                        new ModuleSetupCommand("musicreduction", "/baa game <arena> chairs musicreduction", "Configure musicreduction setup data.", true),
+                        new ModuleSetupCommand("musictime", "/baa game <arena> chairs musictime", "Configure musictime setup data.", true),
+                        new ModuleSetupCommand("sitreduction", "/baa game <arena> chairs sitreduction", "Configure sitreduction setup data.", true),
+                        new ModuleSetupCommand("sittime", "/baa game <arena> chairs sittime", "Configure sittime setup data.", true)
+                );
+            }
+
+            @Override
+            public List<ModuleSetupStatusCheck<?, ?, ?>> getStatusChecks() {
+                return List.of(
+                        new ModuleSetupStatusCheck<>("musicreduction", true, "Set the music reduction value.", context -> context.getData().getDouble("basic.music_time_reduction", 0.0D) > 0.0D || context.getData().getInt("basic.music_time_reduction", 0) > 0),
+                        new ModuleSetupStatusCheck<>("musictime", true, "Set the music time.", context -> context.getData().getDouble("basic.initial_music_time", 0.0D) > 0.0D || context.getData().getInt("basic.initial_music_time", 0) > 0),
+                        new ModuleSetupStatusCheck<>("sitreduction", true, "Set the sit reduction value.", context -> context.getData().getDouble("basic.sit_time_reduction", 0.0D) > 0.0D || context.getData().getInt("basic.sit_time_reduction", 0) > 0),
+                        new ModuleSetupStatusCheck<>("sittime", true, "Set the sit time.", context -> context.getData().getDouble("basic.initial_sit_time", 0.0D) > 0.0D || context.getData().getInt("basic.initial_sit_time", 0) > 0)
+                );
+            }
+        };
+    }
+
 }

@@ -31,16 +31,16 @@ public class ChairsSetup implements GameSetupHandler {
 
         return switch (subcommand) {
             case "musictime" -> handleTime(context, "basic.initial_music_time",
-                    module.getModuleConfig().getStringFrom("language.yml", "setup_messages.usage_music_time"));
+                    module.getModuleConfig().getTranslation(context.getPlayer(), "setup_messages.usage_music_time"));
             case "sittime" -> handleTime(context, "basic.initial_sit_time",
-                    module.getModuleConfig().getStringFrom("language.yml", "setup_messages.usage_sit_time"));
+                    module.getModuleConfig().getTranslation(context.getPlayer(), "setup_messages.usage_sit_time"));
             case "musicreduction" -> handleTime(context, "basic.music_time_reduction",
-                    module.getModuleConfig().getStringFrom("language.yml", "setup_messages.usage_music_reduction"));
+                    module.getModuleConfig().getTranslation(context.getPlayer(), "setup_messages.usage_music_reduction"));
             case "sitreduction" -> handleTime(context, "basic.sit_time_reduction",
-                    module.getModuleConfig().getStringFrom("language.yml", "setup_messages.usage_sit_reduction"));
+                    module.getModuleConfig().getTranslation(context.getPlayer(), "setup_messages.usage_sit_reduction"));
             default -> {
                 context.getMessagesAPI().sendRaw(context.getPlayer(),
-                        module.getCoreConfig().getLanguage("admin_commands.errors.unknown_subcommand"));
+                        module.getCoreConfig().getLanguage(context.getPlayer(), "admin_commands.errors.unknown_subcommand"));
                 yield true;
             }
         };
@@ -62,7 +62,7 @@ public class ChairsSetup implements GameSetupHandler {
             context.getData().setDouble(path, value);
             context.getData().save();
             context.getMessagesAPI().sendRaw(context.getPlayer(),
-                    module.getModuleConfig().getStringFrom("language.yml", "setup_messages.time_updated")
+                    module.getModuleConfig().getTranslation(context.getPlayer(), "setup_messages.time_updated")
                             .replace("{key}", path)
                             .replace("{value}", context.getHandlerArg(0)));
         } catch (NumberFormatException e) {

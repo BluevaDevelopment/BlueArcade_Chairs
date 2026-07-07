@@ -76,11 +76,11 @@ public class ChairsGame {
 
             context.getSoundsAPI().play(player, module.getCoreConfig().getSound("sounds.starting_game.countdown"));
 
-            String title = module.getCoreConfig().getLanguage("titles.starting_game.title")
+            String title = module.getCoreConfig().getLanguage(player, "titles.starting_game.title")
                     .replace("{game_display_name}", module.getModuleInfo().getName())
                     .replace("{time}", String.valueOf(secondsLeft));
 
-            String subtitle = module.getCoreConfig().getLanguage("titles.starting_game.subtitle")
+            String subtitle = module.getCoreConfig().getLanguage(player, "titles.starting_game.subtitle")
                     .replace("{game_display_name}", module.getModuleInfo().getName())
                     .replace("{time}", String.valueOf(secondsLeft));
 
@@ -94,10 +94,10 @@ public class ChairsGame {
                 continue;
             }
 
-            String title = module.getCoreConfig().getLanguage("titles.game_started.title")
+            String title = module.getCoreConfig().getLanguage(player, "titles.game_started.title")
                     .replace("{game_display_name}", module.getModuleInfo().getName());
 
-            String subtitle = module.getCoreConfig().getLanguage("titles.game_started.subtitle")
+            String subtitle = module.getCoreConfig().getLanguage(player, "titles.game_started.subtitle")
                     .replace("{game_display_name}", module.getModuleInfo().getName());
 
             context.getTitlesAPI().sendRaw(player, title, subtitle, 0, 20, 20);
@@ -174,14 +174,13 @@ public class ChairsGame {
     private void updateDisplays(GameContext<Player, Location, World, Material, ItemStack, Sound, Block, Entity> context,
                                 boolean seatingPhase) {
         int arenaId = context.getArenaId();
-        String actionBarTemplate = seatingPhase
-                ? module.getModuleConfig().getStringFrom("language.yml", "action_bar.sit")
-                : module.getModuleConfig().getStringFrom("language.yml", "action_bar.music");
-
         String timeText = formatSeconds(currentPhaseTime.getOrDefault(arenaId, 0D));
         String roundText = String.valueOf(rounds.getOrDefault(arenaId, 1));
 
         for (Player player : context.getPlayers()) {
+            String actionBarTemplate = seatingPhase
+                    ? module.getModuleConfig().getTranslation(player, "action_bar.sit")
+                    : module.getModuleConfig().getTranslation(player, "action_bar.music");
             String actionBar = actionBarTemplate
                     .replace("{chairs_time}", timeText)
                     .replace("{chairs_round}", roundText);
@@ -253,8 +252,8 @@ public class ChairsGame {
         for (Player player : alive) {
             Entity vehicle = player.getVehicle();
             if (vehicle == null || !activeSeats.getOrDefault(context.getArenaId(), List.of()).contains(vehicle)) {
-                context.eliminatePlayer(player, module.getModuleConfig().getStringFrom("language.yml", "messages.eliminated"));
-                player.setGameMode(GameMode.SPECTATOR);
+                context.eliminatePlayer(player, module.getModuleConfig().getTranslation(player, "messages.eliminated"));
+                context.setPlayerSpectating(player, true);
             } else if (module.getStatsAPI() != null) {
                 module.getStatsAPI().addModuleStat(player, module.getModuleInfo().getId(), "rounds_survived", 1);
             }
@@ -387,8 +386,8 @@ public class ChairsGame {
     }
 
     private void sendDescription(GameContext<Player, Location, World, Material, ItemStack, Sound, Block, Entity> context) {
-        List<String> description = module.getModuleConfig().getStringListFrom("language.yml", "description.default");
         for (Player player : context.getPlayers()) {
+            List<String> description = module.getModuleConfig().getTranslationList(player, "description.default");
             for (String line : description) {
                 context.getMessagesAPI().sendRaw(player, line);
             }
@@ -422,4 +421,10 @@ public class ChairsGame {
 
         return false;
     }
+
+    private static String formatCountdownTime(int seconds) {
+        int safeSeconds = Math.max(0, seconds);
+        return String.format("%02d:%02d", safeSeconds / 60, safeSeconds % 60);
+    }
+
 }
