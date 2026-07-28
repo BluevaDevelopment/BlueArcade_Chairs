@@ -269,7 +269,6 @@ public class ChairsGame {
             context.setWinner(winner);
             if (module.getStatsAPI() != null) {
                 module.getStatsAPI().addModuleStat(winner, module.getModuleInfo().getId(), "wins", 1);
-                module.getStatsAPI().addGlobalStat(winner, "wins", 1);
             }
         }
         context.endGame();
